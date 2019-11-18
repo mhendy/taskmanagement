@@ -20,6 +20,11 @@ public with sharing class TaskServices {
         taskRecordToComplete.Completed__c = true;
         update taskRecordToComplete;
     }
+    
+    public static void deleteTask(String taskIdToDelete){        
+        ResourceTask__c taskRecordToDelete = new ResourceTask__c(Id = taskIdToDelete);        
+        delete taskRecordToDelete;
+    }
     public static List<ResourceTask__c> getTasks(){        
         List<ResourceTask__c> tasksFound = new List<ResourceTask__c>();
 

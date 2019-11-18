@@ -26,4 +26,12 @@ public with sharing class TaskController {
             throw new AuraHandledException(ex.getMessage());
         }        
     }    
+    @AuraEnabled     
+    public static void deleteTask(String taskId) {                
+        try{            
+            TaskServices.deleteTask(taskId);
+        } catch (Exception ex){
+            throw new AuraHandledException(ex.getMessage());
+        }        
+    }    
 }

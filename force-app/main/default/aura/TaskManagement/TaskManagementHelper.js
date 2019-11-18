@@ -39,9 +39,29 @@
         });
         action.setCallback(this, function(response){
             var state = response.getState();        
-            if (state === "SUCCESS") {                                                                                                            
-            //refresh the tasks from the database
+            if (state === "SUCCESS") {                                                                                                                        
             this.getTasks(component);                                                           
+            }            
+            else if (state === "ERROR") {
+                var errors = response.getError();
+                this.handleErrors(errors);
+            }
+        });
+        $A.enqueueAction(action);
+    },
+    deleteTask : function(component, taskToIdDelete) {
+        var action = component.get('c.deleteTask');
+        action.setParams({
+            taskId: taskToIdDelete            
+        });
+        action.setCallback(this, function(response){
+            var state = response.getState();        
+            if (state === "SUCCESS") {                                                                                                                        
+                var currentlyViewedTask = component.get('v.selectedTaskIdToView');                
+                if(currentlyViewedTask && currentlyViewedTask === taskToIdDelete){
+                    component.set('v.selectedTaskIdToView', null);    
+                }                                                           
+                this.getTasks(component);
             }            
             else if (state === "ERROR") {
                 var errors = response.getError();
