@@ -2,6 +2,7 @@
     <aura:attribute name="taskList" type="List" default="[]" />
     <aura:attribute name="columns" type="List" default="[]" />
     <aura:attribute name="selectedTaskIdToView" type="String" default="" />
+    <aura:attribute name="selectedFilterValue" type="String" default="" />
     <aura:handler name="addClickedEvt" event="c:addClickedEvent" action="{!c.handleCreateTaskClickEvent}"/>
     <aura:handler name="cancelAddTaskEvt" event="c:cancelAddTaskEvent" action="{!c.handleCancelTaskClickEvent}"/>
     <aura:handler name="init" value="{!this }" action="{!c.init }"/>
@@ -11,7 +12,7 @@
             <lightning:button variant="brand" label="Create Task" title="Create Task" onclick="{!c.showCreateTask}" disabled="{!v.createMode}" />
             <aura:if isTrue="{!v.createMode}">
                 <c:NewTask />        
-            </aura:if>
+            </aura:if>            
             <lightning:datatable class="slds-table slds-table_cell-buffer slds-table_bordered"
                 keyField="id"
                 data="{!v.taskList }"
@@ -20,6 +21,12 @@
                 onrowaction="{!c.handleRowAction}"/>
         </div>        
         <div class="slds-col slds-size_1-of-2 slds-theme_default">            
+            <lightning:select name="filterTasks" label="Filter Tasks" onchange="{!c.applyFilter}" value="{!v.selectedFilterValue}">
+                <option value="all">All</option>
+                <option value="overdue">OverDue</option>
+                <option value="soondue">Soon Due</option>
+                <option value="completed">Completed</option>
+            </lightning:select>
             <aura:if isTrue="{!not(empty(v.selectedTaskIdToView))}">
                 <lightning:recordViewForm recordId="{!v.selectedTaskIdToView}" objectApiName="ResourceTask__c">
                     <div class="slds-box">
