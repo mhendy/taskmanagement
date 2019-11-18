@@ -18,4 +18,12 @@ public with sharing class TaskController {
         }
         return allTasks;       
     }    
+    @AuraEnabled     
+    public static void completeTask(String taskId) {                
+        try{            
+            TaskServices.completeTask(taskId);
+        } catch (Exception ex){
+            throw new AuraHandledException(ex.getMessage());
+        }        
+    }    
 }

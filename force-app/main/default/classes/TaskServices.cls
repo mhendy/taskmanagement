@@ -3,7 +3,7 @@ public with sharing class TaskServices {
     private static String taskQueryBase {
         get{
             if(taskQueryBase == null){
-                taskQueryBase = 'SELECT id, Name, Due_Date__c, Description__c'
+                taskQueryBase = 'SELECT id, Name, Due_Date__c, Description__c, Completed__c'
                                   +' FROM ResourceTask__c'
                                   +' WHERE OwnerId = ';                                  
             }
@@ -14,6 +14,11 @@ public with sharing class TaskServices {
 
     public static void createTask(ResourceTask__c taskToCreate){        
         insert taskToCreate;
+    }
+    public static void completeTask(String taskIdToComplete){        
+        ResourceTask__c taskRecordToComplete = new ResourceTask__c(Id = taskIdToComplete);
+        taskRecordToComplete.Completed__c = true;
+        update taskRecordToComplete;
     }
     public static List<ResourceTask__c> getTasks(){        
         List<ResourceTask__c> tasksFound = new List<ResourceTask__c>();
