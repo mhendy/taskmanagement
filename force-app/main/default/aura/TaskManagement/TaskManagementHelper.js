@@ -82,6 +82,38 @@
         
         fillActionCb(actions);
     },
+    applyFilter : function(component) {        
+        var filterValue = component.get('v.selectedFilterValue');
+        var action;
+
+        switch (filterValue) {
+            case 'overdue':                
+                action = component.get('c.getOverDueTasks');
+                break;
+            case 'soondue':                
+                action = component.get('c.getSoonDueTasks');                
+                break;
+            case 'completed':
+                action = component.get('c.getCompletedTasks');                
+                break;
+            default:
+                action = component.get('c.getTasks');                
+                break;
+        }
+                
+        action.setCallback(this, function(response){
+            var state = response.getState();        
+            if (state === "SUCCESS") {                                                                                                            
+                var tasks = response.getReturnValue();
+                component.set('v.taskList', tasks);
+            }            
+            else if (state === "ERROR") {
+                var errors = response.getError();
+                this.handleErrors(errors);
+            }
+        });
+        $A.enqueueAction(action);
+    },
     handleErrors : function(errors) {        
         var toastParams = {
             title: "Error",

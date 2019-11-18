@@ -33,4 +33,13 @@ public with sharing class TaskServices {
         }
         return tasksFound;
     }
+    public static List<ResourceTask__c> getFilteredTasks(String additionalFilter){        
+        List<ResourceTask__c> tasksFound = new List<ResourceTask__c>();
+
+        String finalQuery = taskQueryBase + '\''+ UserInfo.getUserId()+'\'' + additionalFilter;
+        for(ResourceTask__c taskFound : database.query(finalQuery)){
+            tasksFound.add(taskFound);
+        }
+        return tasksFound;
+    }
 }

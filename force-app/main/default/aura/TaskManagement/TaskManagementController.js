@@ -4,7 +4,7 @@
         component.set('v.columns', [
             {label: 'Task Name', fieldName: 'Name', type: 'text'},
             {label: 'Task Description', fieldName: 'Description__c', type: 'text'},
-            {label: 'Due Date', fieldName: 'Due_Date__c', type: 'date'},
+            {label: 'Due Date', fieldName: 'Due_Date__c', type: 'date-local'},
             {label: 'Completed', fieldName: 'Completed__c', type: 'boolean'},
             {label:'Actions', type: 'action', typeAttributes: { rowActions: actions } }            
         ]);
@@ -17,11 +17,14 @@
         var taskName = event.getParam('taskName');         
         var taskDueDate = event.getParam('taskDueDate');         
         var taskDescription = event.getParam('taskDescription');
-        var taskToCreate = {'Name':taskName, 'Due_Date__c':taskDueDate, 'Description__c':taskDescription};        
+        var taskToCreate = {'Name':taskName, 'Due_Date__c':taskDueDate, 'Description__c':taskDescription};                
         helper.createTask(component, event, taskToCreate);
     },
     handleCancelTaskClickEvent : function(component, event, helper) {        
         component.set('v.createMode', false);
+    },
+    applyFilter : function(component, event, helper) {        
+        helper.applyFilter(component);
     },
     handleRowAction: function (component, event, helper) {        
         var action = event.getParam('action');
