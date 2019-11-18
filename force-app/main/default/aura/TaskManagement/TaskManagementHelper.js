@@ -7,7 +7,23 @@
         action.setCallback(this, function(response){
             var state = response.getState();        
             if (state === "SUCCESS") {                                                                                                            
-             //refresh the tasks from the database                                                           
+            //refresh the tasks from the database
+            this.getTasks(component);                                                           
+            }            
+            else if (state === "ERROR") {
+                var errors = response.getError();
+                this.handleErrors(errors);
+            }
+        });
+        $A.enqueueAction(action);
+    },
+    getTasks : function(component) {        
+        var action = component.get('c.getTasks');        
+        action.setCallback(this, function(response){
+            var state = response.getState();        
+            if (state === "SUCCESS") {                                                                                                            
+                var tasks = response.getReturnValue();
+                component.set('v.taskList', tasks);
             }            
             else if (state === "ERROR") {
                 var errors = response.getError();

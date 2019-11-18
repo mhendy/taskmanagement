@@ -34,4 +34,43 @@ private with sharing class TestTaskController {
         Test.stopTest();
         System.assertNotEquals(null, exceptionMessage, 'An exception message should be shown');          
     }
+
+    @isTest
+    static void testTaskRetrieval(){
+        Date expectedDate = Date.newInstance(2019, 12, 27);
+        ResourceTask__c testTask = new ResourceTask__c(Name = 'testName', Description__c = 'testDesc', Due_Date__c=expectedDate);
+        insert testTask;
+        List<ResourceTask__c> actualTasks = new List<ResourceTask__c>();
+        Test.startTest();
+            try{
+                actualTasks = TaskController.getTasks();                 
+            } catch(Exception ex){
+                System.assert(false,'No Exception should be thrown');
+            }
+        Test.stopTest();
+        System.assertEquals(1, actualTasks.size(), 'The correct number of tasks should be found');
+        ResourceTask__c actualTask = actualTasks[0];
+        System.assertEquals('testName', actualTask.Name,'The task should have the correct name');
+        System.assertEquals('testDesc', actualTask.Description__c,'The task should have the correct description');
+        System.assertEquals(expectedDate, actualTask.Due_Date__c,'The task should have the correct due date');         
+    }
+    
+    @isTest
+    static void testTaskRetrieval_error(){        
+        Exception exceptionReceived;
+        List<ResourceTask__c> actualTasks = new List<ResourceTask__c>();                
+        //Use an invalid query string
+        TaskServices.taskQueryBase = 'Select Ids from Accountz';
+        
+        Test.startTest();
+            try{
+                actualTasks = TaskController.getTasks();
+                System.assert(false, 'An exception should be caught');
+            }catch(Exception ex){
+                exceptionReceived = ex;
+            }
+        Test.stopTest();        
+        
+        System.assert(exceptionReceived instanceof AuraHandledException);         
+    }
 }
