@@ -7,18 +7,18 @@
     <aura:handler name="init" value="{!this }" action="{!c.init }"/>
     <aura:attribute name="createMode" type="Boolean" default="false" />
     <div class="slds-grid">
-        <div class="slds-col slds-size_1-of-2">
+        <div class="slds-col slds-size_1-of-2 slds-scrollable_none">
             <lightning:button variant="brand" label="Create Task" title="Create Task" onclick="{!c.showCreateTask}" disabled="{!v.createMode}" />
             <aura:if isTrue="{!v.createMode}">
                 <c:NewTask />        
             </aura:if>
-            <lightning:datatable
+            <lightning:datatable class="slds-table slds-table_cell-buffer slds-table_bordered"
                 keyField="id"
                 data="{!v.taskList }"
                 columns="{!v.columns }"
                 hideCheckboxColumn="true"
                 onrowaction="{!c.handleRowAction}"/>
-        </div>
+        </div>        
         <div class="slds-col slds-size_1-of-2 slds-theme_default">            
             <aura:if isTrue="{!not(empty(v.selectedTaskIdToView))}">
                 <lightning:recordViewForm recordId="{!v.selectedTaskIdToView}" objectApiName="ResourceTask__c">
@@ -33,6 +33,6 @@
                     <lightning:formattedText value="No Task Selected" />
                 </aura:set>   
             </aura:if>            
-        </div>
+        </div>        
     </div>
 </aura:component>	

@@ -73,4 +73,42 @@ private with sharing class TestTaskController {
         
         System.assert(exceptionReceived instanceof AuraHandledException);         
     }
+
+    @isTest
+    static void testTaskCompletion(){
+        Date taskDate = Date.newInstance(2019, 12, 27);
+        ResourceTask__c testTask = new ResourceTask__c(Name = 'testName', 
+                                                       Description__c = 'testDesc', 
+                                                       Due_Date__c=taskDate,
+                                                       Completed__c = false);
+        insert testTask;
+        
+        Test.startTest();
+            try{
+                TaskController.completeTask(testTask.Id);                
+            } catch(Exception ex){
+                System.assert(false, 'No Exceptions should be received' + ex.getMessage());
+            }
+        Test.stopTest();        
+        
+        List<ResourceTask__c> tasksInserted = [Select Id, Completed__c from ResourceTask__c];
+        System.assertEquals(1, tasksInserted.size(), 'A task should have been created');
+        ResourceTask__c taskInserted = tasksInserted[0];
+        System.assertEquals(true, taskInserted.Completed__c,'The task should be completed');        
+    }
+
+    @isTest
+    static void testTaskCompletion_Error(){        
+        String exceptionMessage;
+        String fakeId = 'ABC';
+        Test.startTest();
+            try{
+                TaskController.completeTask(fakeId); 
+                System.assert(false, 'An exception should be thrown');               
+            } catch(Exception ex){
+                exceptionMessage = ex.getMessage();
+            }
+        Test.stopTest();
+        System.assertNotEquals(null, exceptionMessage, 'An exception message should be shown');          
+    }
 }

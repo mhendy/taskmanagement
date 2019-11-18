@@ -1,9 +1,6 @@
 ({
     init : function(component, event, helper) {
-        var actions = [
-            { label: 'View', name: 'show_details' },
-            { label: 'Delete', name: 'delete' }
-        ]
+        var actions = helper.getRowActions.bind(this, component);        
         component.set('v.columns', [
             {label: 'Task Name', fieldName: 'Name', type: 'text'},
             {label: 'Task Description', fieldName: 'Description__c', type: 'text'},
@@ -34,8 +31,10 @@
             case 'show_details':                
                 component.set('v.selectedTaskIdToView', row.Id);
                 break;
-            case 'delete':
-                //helper.removeBook(cmp, row);
+            case 'delete':                
+                break;
+            case 'complete':
+                helper.completeTask(component, row.Id);                
                 break;
         }
     }
