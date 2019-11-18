@@ -1,0 +1,5 @@
+<aura:event type="Component" description="Save event for adding a new task">
+    <aura:attribute name="taskName" type="String" />
+    <aura:attribute name="taskDueDate" type="Date" />
+    <aura:attribute name="taskDescription" type="String" />
+</aura:event>

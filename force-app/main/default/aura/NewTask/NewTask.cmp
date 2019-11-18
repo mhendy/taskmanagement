@@ -1,0 +1,14 @@
+<aura:component>
+    <aura:attribute name="taskName" type="String" />
+    <aura:attribute name="taskDate" type="Date" />
+    <aura:attribute name="taskDescription" type="String" />
+    <aura:registerEvent name="addClickedEvt" type="c:addClickedEvent"/>
+    <aura:registerEvent name="cancelAddTaskEvt" type="c:cancelAddTaskEvent"/>
+    
+    <lightning:input name="TaskName" label="Task Name: " value="{!v.taskName}"/>
+    <lightning:input name="TaskDescription" label="Task Description: " value="{!v.taskDescription}"/>
+    <lightning:input type="date" name="TaskDueDate" label="Task Due Date: " value="{!v.taskDate}"/>
+    
+    <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.fireCreateTask}"/>
+    <lightning:button variant="brand" label="Cancel" title="Cancel" onclick="{!c.fireCancelCreateTask}"/>    
+</aura:component>	
