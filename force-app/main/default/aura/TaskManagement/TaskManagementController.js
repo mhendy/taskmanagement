@@ -1,10 +1,15 @@
 ({
     init : function(component, event, helper) {
+        var actions = [
+            { label: 'View', name: 'show_details' },
+            { label: 'Delete', name: 'delete' }
+        ]
         component.set('v.columns', [
             {label: 'Task Name', fieldName: 'Name', type: 'text'},
             {label: 'Task Description', fieldName: 'Description__c', type: 'text'},
             {label: 'Due Date', fieldName: 'Due_Date__c', type: 'date'},
-            {label: 'Completed', fieldName: 'Completed__c', type: 'boolean'}            
+            {label: 'Completed', fieldName: 'Completed__c', type: 'boolean'},
+            {label:'Actions', type: 'action', typeAttributes: { rowActions: actions } }            
         ]);
         helper.getTasks(component);
     },
@@ -20,5 +25,18 @@
     },
     handleCancelTaskClickEvent : function(component, event, helper) {        
         component.set('v.createMode', false);
+    },
+    handleRowAction: function (component, event, helper) {        
+        var action = event.getParam('action');
+        var row = event.getParam('row');
+
+        switch (action.name) {
+            case 'show_details':                
+                component.set('v.selectedTaskIdToView', row.Id);
+                break;
+            case 'delete':
+                //helper.removeBook(cmp, row);
+                break;
+        }
     }
 })
