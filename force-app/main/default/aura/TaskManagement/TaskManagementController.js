@@ -32,6 +32,7 @@
                 component.set('v.selectedTaskIdToView', row.Id);
                 break;
             case 'delete':                
+                helper.deleteTask(component, row.Id);                
                 break;
             case 'complete':
                 helper.completeTask(component, row.Id);                

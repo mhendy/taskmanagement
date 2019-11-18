@@ -111,4 +111,40 @@ private with sharing class TestTaskController {
         Test.stopTest();
         System.assertNotEquals(null, exceptionMessage, 'An exception message should be shown');          
     }
+
+    @isTest
+    static void testTaskDeletion(){
+        Date taskDate = Date.newInstance(2019, 12, 27);
+        ResourceTask__c testTask = new ResourceTask__c(Name = 'testName', 
+                                                       Description__c = 'testDesc', 
+                                                       Due_Date__c=taskDate,
+                                                       Completed__c = false);
+        insert testTask;        
+        
+        Test.startTest();
+            try{
+                TaskController.deleteTask(testTask.Id);                
+            } catch(Exception ex){
+                System.assert(false, 'No Exceptions should be received' + ex.getMessage());
+            }
+        Test.stopTest();        
+        
+        List<ResourceTask__c> tasksInserted = [Select Id, Completed__c from ResourceTask__c];
+        System.assertEquals(0, tasksInserted.size(), 'No tasks should exist');                
+    }
+
+    @isTest
+    static void testTaskDeletion_Error(){        
+        String exceptionMessage;
+        String fakeId = 'ABC';
+        Test.startTest();
+            try{
+                TaskController.deleteTask(fakeId); 
+                System.assert(false, 'An exception should be thrown');               
+            } catch(Exception ex){
+                exceptionMessage = ex.getMessage();
+            }
+        Test.stopTest();
+        System.assertNotEquals(null, exceptionMessage, 'An exception message should be shown');          
+    }
 }
