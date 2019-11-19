@@ -3,14 +3,14 @@ public with sharing class TaskController {
     private static String OVER_DUE_QUERY_FILTER {
         get{
             if(OVER_DUE_QUERY_FILTER == null){
-                OVER_DUE_QUERY_FILTER = ' AND Due_Date__c < TODAY';                                  
+                OVER_DUE_QUERY_FILTER = ' AND Due_Date__c < TODAY AND Completed__c = false';                                  
             }
             return OVER_DUE_QUERY_FILTER;
         }
         set;
     }    
         
-    private static final String SOON_DUE_QUERY_FILTER = ' AND (Due_Date__c = TODAY OR Due_Date__c = TOMORROW)';
+    private static final String SOON_DUE_QUERY_FILTER = ' AND (Due_Date__c = TODAY OR Due_Date__c = TOMORROW) AND Completed__c = false';
     private static final String COMPLETED_QUERY_FILTER = ' AND Completed__c = true';
 
     @AuraEnabled     
