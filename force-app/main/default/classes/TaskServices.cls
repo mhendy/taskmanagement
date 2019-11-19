@@ -28,7 +28,7 @@ public with sharing class TaskServices {
     public static List<ResourceTask__c> getTasks(){        
         List<ResourceTask__c> tasksFound = new List<ResourceTask__c>();
 
-        for(ResourceTask__c taskFound : database.query(taskQueryBase + '\''+ UserInfo.getUserId()+'\'')){
+        for(ResourceTask__c taskFound : database.query(taskQueryBase + '\''+ UserInfo.getUserId()+'\' ORDER BY Due_Date__c DESC')){
             tasksFound.add(taskFound);
         }
         return tasksFound;
@@ -36,7 +36,7 @@ public with sharing class TaskServices {
     public static List<ResourceTask__c> getFilteredTasks(String additionalFilter){        
         List<ResourceTask__c> tasksFound = new List<ResourceTask__c>();
 
-        String finalQuery = taskQueryBase + '\''+ UserInfo.getUserId()+'\'' + additionalFilter;
+        String finalQuery = taskQueryBase + '\''+ UserInfo.getUserId()+'\'' + additionalFilter + ' ORDER BY Due_Date__c DESC';
         for(ResourceTask__c taskFound : database.query(finalQuery)){
             tasksFound.add(taskFound);
         }

@@ -11,12 +11,13 @@
             {label: 'Task Description', fieldName: 'Description__c', type: 'text'},
             {label: 'Due Date', fieldName: 'Due_Date__c', type: 'date-local'},
             {label: 'Completed', fieldName: 'Completed__c', type: 'boolean'},
-            {label:'Actions', type: 'action', typeAttributes: { rowActions: actions } }            
+            {label:'Actions', type: 'action', typeAttributes: { rowActions: actions }, fixedWidth: 100 }            
         ]);            
         helper.getTasks(component);
     },
     showCreateTask : function(component, event, helper) {        
         component.set('v.createMode', true);
+        component.set('v.selectedTaskIdToView', null);
     },
     handleCreateTaskClickEvent : function(component, event, helper) {
         var taskName = event.getParam('taskName');         
@@ -28,7 +29,8 @@
     handleCancelTaskClickEvent : function(component, event, helper) {        
         component.set('v.createMode', false);
     },
-    applyFilter : function(component, event, helper) {        
+    applyFilter : function(component, event, helper) {
+        component.set('v.selectedTaskIdToView', null);        
         helper.applyFilter(component);
     },
     handleRowAction: function (component, event, helper) {        

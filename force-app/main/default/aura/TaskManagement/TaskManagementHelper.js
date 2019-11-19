@@ -70,6 +70,7 @@
         });
         $A.enqueueAction(action);
     },
+    
     getRowActions: function(component, row, fillActionCb) {
         var actions = [];
         var actionView = {label: "View", name: "show_details"};
