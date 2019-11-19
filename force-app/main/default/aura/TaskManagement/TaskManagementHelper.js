@@ -22,8 +22,8 @@
         action.setCallback(this, function(response){
             var state = response.getState();        
             if (state === "SUCCESS") {                                                                                                            
-                var tasks = response.getReturnValue();
-                component.set('v.taskList', tasks);
+                var tasks = response.getReturnValue();                
+                this.displayTasks(component, tasks);                
             }            
             else if (state === "ERROR") {
                 var errors = response.getError();
@@ -105,7 +105,7 @@
             var state = response.getState();        
             if (state === "SUCCESS") {                                                                                                            
                 var tasks = response.getReturnValue();
-                component.set('v.taskList', tasks);
+                this.displayTasks(component, tasks); 
             }            
             else if (state === "ERROR") {
                 var errors = response.getError();
@@ -113,6 +113,25 @@
             }
         });
         $A.enqueueAction(action);
+    },
+    displayTasks : function(component, tasksToDisplay) {                
+        var today = new Date();
+        var currentDate = new Date( today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
+        var tomorrowDate = new Date( today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
+        tomorrowDate.setDate(tomorrowDate.getDate() + 1);        
+
+        tasksToDisplay.forEach(function(record){             
+            var recordDate =  new Date(record.Due_Date__c);            
+            record.displayIconName = 'action:new_task';
+            if(record.Completed__c) {
+                record.displayIconName = 'action:approval';
+            }else if(recordDate.getTime() == currentDate.getTime() || recordDate.getTime() == tomorrowDate.getTime()){
+                record.displayIconName = 'action:priority';
+            } else if(recordDate < currentDate) {
+                record.displayIconName = 'action:close';                
+            }                                                                      
+        });
+        component.set('v.taskList', tasksToDisplay);
     },
     handleErrors : function(errors) {        
         var toastParams = {

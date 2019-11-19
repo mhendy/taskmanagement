@@ -2,12 +2,17 @@
     init : function(component, event, helper) {
         var actions = helper.getRowActions.bind(this, component);        
         component.set('v.columns', [
+            {label: 'Task Status Indicator', 
+                cellAttributes: { 
+                    iconName: {fieldName: 'displayIconName'},
+                    iconPosition: 'left' }
+            },
             {label: 'Task Name', fieldName: 'Name', type: 'text'},
             {label: 'Task Description', fieldName: 'Description__c', type: 'text'},
             {label: 'Due Date', fieldName: 'Due_Date__c', type: 'date-local'},
             {label: 'Completed', fieldName: 'Completed__c', type: 'boolean'},
             {label:'Actions', type: 'action', typeAttributes: { rowActions: actions } }            
-        ]);
+        ]);            
         helper.getTasks(component);
     },
     showCreateTask : function(component, event, helper) {        

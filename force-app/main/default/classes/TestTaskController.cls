@@ -173,8 +173,14 @@ private with sharing class TestTaskController {
         Date soonDueDate = pastDueDate.addDays(2);
         Date futureDate = pastDueDate.addYears(2);
         
-        ResourceTask__c testPastDueTask = new ResourceTask__c(Name = 'testName', Description__c = 'testDesc', Due_Date__c=pastDueDate);
-        ResourceTask__c testSoonDueTask = new ResourceTask__c(Name = 'testName', Description__c = 'testDesc', Due_Date__c=soonDueDate);
+        ResourceTask__c testPastDueTask = new ResourceTask__c(Name = 'testName', 
+                                                              Description__c = 'testDesc', 
+                                                              Due_Date__c=pastDueDate,
+                                                              Completed__c = false);
+        ResourceTask__c testSoonDueTask = new ResourceTask__c(Name = 'testName', 
+                                                              Description__c = 'testDesc', 
+                                                              Due_Date__c=soonDueDate,
+                                                              Completed__c = false);
         ResourceTask__c testCompletedTask = new ResourceTask__c(Name = 'testName', 
                                                                 Description__c = 'testDesc', 
                                                                 Due_Date__c=futureDate,
